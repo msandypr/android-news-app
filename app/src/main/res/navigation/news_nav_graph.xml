@@ -11,8 +11,9 @@
 
         <argument
             android:name="article"
-            app:argType="com.msandypr.thesandynews.models.Article"
+            app:argType="com.msandypr.thesandynews.models.Article"/>
     </fragment>
+
     <fragment
         android:id="@+id/bookmarkFragment2"
         android:name="com.msandypr.thesandynews.ui.fragments.BookmarkFragment"
