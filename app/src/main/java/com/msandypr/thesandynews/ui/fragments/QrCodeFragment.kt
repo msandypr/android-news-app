@@ -73,16 +73,13 @@ class QrCodeFragment : Fragment() {
             if (checkCameraPermission()){
                 pickImageCamera()
             } else {
-                requestCameraPermission()
+                requestCameraAndStoragePermissions()
             }
         }
 
         galleryButton.setOnClickListener {
-            if (checkStoragePermission()){
-                pickImageGallery()
-            } else {
-                requestStoragePermission()
-            }
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            galleryActivityResultLauncher.launch(galleryIntent)
         }
 
         scanButton.setOnClickListener {
@@ -98,20 +95,25 @@ class QrCodeFragment : Fragment() {
     private fun detectResultFromImage() {
         Log.d(TAG, "detectResultFromImage: ")
         try {
-            val inputImage = InputImage.fromFilePath(requireContext(), imageUri!!)
-            val barcodeResult = barcodeScanner!!.process(inputImage)
-                .addOnSuccessListener { barcodes ->
-                    extractBarcodeQrCodeInfo(barcodes)
+            barcodeScanner?.let { scanner ->
+                barcodeScannerOptions?.let { options ->
+                    val inputImage = InputImage.fromFilePath(requireContext(), imageUri!!)
+                    val barcodeResult = scanner.process(inputImage)
+                        .addOnSuccessListener { barcodes ->
+                            extractBarcodeQrCodeInfo(barcodes)
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "detectResultFromImage: Barcode scanning failed", e)
+                            showToast("Failed scanning due to ${e.message}")
+                        }
                 }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "detectResultFromImage: ", e)
-                    showToast("Failed scanning due to ${e.message}")
-                }
+            }
         } catch (e: Exception) {
-            Log.e(TAG, "detectResultFromImage: ", e)
+            Log.e(TAG, "detectResultFromImage: Exception", e)
             showToast("Failed due to ${e.message}")
         }
     }
+
 
 
     @SuppressLint("SetTextI18n")
@@ -254,31 +256,44 @@ class QrCodeFragment : Fragment() {
         }
     }
 
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     private fun checkStoragePermission(): Boolean {
-        return (ContextCompat.checkSelfPermission(
+        return ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED)
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestStoragePermission() {
-        activity?.let {
-            ActivityCompat.requestPermissions(it, storagePermissions, STORAGE_REQUEST_CODE)
+    private fun requestCameraAndStoragePermissions() {
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (!checkCameraPermission()) {
+            permissionsToRequest.add(Manifest.permission.CAMERA)
+        }
+
+        if (!checkStoragePermission()) {
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    permissionsToRequest.toTypedArray(),
+                    CAMERA_REQUEST_CODE
+                )
+            }
+        } else {
+            showToast("Camera & Storage Permissions are Already Granted")
         }
     }
 
-    private fun checkCameraPermission(): Boolean{
-        val resultCamera = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-        val resultStorage = (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-
-        return resultCamera && resultStorage
-    }
-
-    private fun requestCameraPermission() {
-        activity?.let {
-            ActivityCompat.requestPermissions(it, cameraPermissions, CAMERA_REQUEST_CODE)
-        }
-    }
 
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")
