@@ -38,4 +38,8 @@
             android:id="@+id/action_searchFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/qrCodeFragment"
+        android:name="com.msandypr.thesandynews.ui.fragments.QrCodeFragment"
+        android:label="QrCodeFragment" />
 </navigation>

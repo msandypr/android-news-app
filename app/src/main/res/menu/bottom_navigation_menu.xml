@@ -19,9 +19,10 @@
         android:icon="@drawable/baseline_search">
     </item>
 
+    <!-- Item-menu for launching an activity -->
     <item
-        android:id="@+id/mlkitFragment"
-        android:title="ML Kit"
+        android:id="@+id/qrCodeFragment"
+        android:title="QR Code"
         android:icon="@drawable/baseline_mlkit">
     </item>
 
