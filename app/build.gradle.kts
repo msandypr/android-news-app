@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    kotlin("kapt")
 }
 
 android {
@@ -75,6 +76,8 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.6")
 
     // Glide
+    annotationProcessor ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     ksp ("com.github.bumptech.glide:compiler:4.12.0")
+
 }

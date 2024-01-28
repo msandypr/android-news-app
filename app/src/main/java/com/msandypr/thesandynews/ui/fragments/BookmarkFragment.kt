@@ -15,7 +15,7 @@ import com.msandypr.thesandynews.databinding.FragmentBookmarkBinding
 import com.msandypr.thesandynews.ui.NewsActivity
 import com.msandypr.thesandynews.ui.NewsViewModel
 
-class BookmarkFragment : Fragment() {
+class BookmarkFragment : Fragment(R.layout.fragment_bookmark) {
     lateinit var newsViewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
     lateinit var binding: FragmentBookmarkBinding

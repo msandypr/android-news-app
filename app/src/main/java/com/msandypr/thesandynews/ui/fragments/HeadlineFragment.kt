@@ -1,5 +1,6 @@
 package com.msandypr.thesandynews.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -22,7 +23,7 @@ import com.msandypr.thesandynews.ui.NewsActivity
 import com.msandypr.thesandynews.util.Constants
 import com.msandypr.thesandynews.util.Resource
 
-class HeadlineFragment : Fragment() {
+class HeadlineFragment : Fragment(R.layout.fragment_headline) {
 
     lateinit var newsViewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
@@ -31,6 +32,7 @@ class HeadlineFragment : Fragment() {
     lateinit var itemHeadlinesError: CardView
     lateinit var binding: FragmentHeadlineBinding
 
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHeadlineBinding.bind(view)
