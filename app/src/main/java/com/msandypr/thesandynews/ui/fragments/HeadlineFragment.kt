@@ -150,7 +150,6 @@ class HeadlineFragment : Fragment() {
                 adapter = newsAdapter
                 layoutManager = LinearLayoutManager(activity)
                 addOnScrollListener(this@HeadlineFragment.scrollListener)
-
         }
     }
 

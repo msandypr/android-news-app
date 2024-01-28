@@ -15,11 +15,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/bookmarkFragment2"
+        android:id="@+id/bookmarkFragment"
         android:name="com.msandypr.thesandynews.ui.fragments.BookmarkFragment"
         android:label="BookmarkFragment" >
         <action
-            android:id="@+id/action_bookmarkFragment2_to_articleFragment"
+            android:id="@+id/action_bookmarkFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
@@ -31,11 +31,11 @@
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchFragment2"
+        android:id="@+id/searchFragment"
         android:name="com.msandypr.thesandynews.ui.fragments.SearchFragment"
         android:label="SearchFragment" >
         <action
-            android:id="@+id/action_searchFragment2_to_articleFragment"
+            android:id="@+id/action_searchFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
 </navigation>
