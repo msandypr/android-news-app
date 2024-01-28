@@ -30,8 +30,8 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             }
         }
 
-        binding.fab.setOnClickListener {
-            newsViewModel.addToBookmarks(article)
+        binding.fab?.setOnClickListener {
+            newsViewModel?.addToBookmarks(article)
             Snackbar.make(view, "Added to Bookmark", Snackbar.LENGTH_SHORT).show()
         }
     }

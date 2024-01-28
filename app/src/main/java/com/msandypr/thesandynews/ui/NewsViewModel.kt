@@ -29,7 +29,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
     var oldSearchQuery: String? = null
 
     init {
-        getHeadlines("id")
+        getHeadlines("us")
     }
 
     fun getHeadlines(countryCode: String) = viewModelScope.launch {
@@ -76,7 +76,10 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
     }
 
     fun addToBookmarks(article: Article) = viewModelScope.launch {
-        newsRepository.upsert(article)
+        if (article.title != null && article.description != null && article.url != null) {
+            newsRepository.upsert(article)
+        } else {
+        }
     }
 
     fun getBookmarkNews() = newsRepository.getBookmarkNews()

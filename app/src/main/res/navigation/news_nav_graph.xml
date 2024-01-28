@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/news_nav_graph"
-    app:startDestination="@id/headlineFragment">
+    app:startDestination="@id/headlinesFragment">
 
     <fragment
         android:id="@+id/articleFragment"
@@ -23,7 +23,7 @@
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/headlineFragment"
+        android:id="@+id/headlinesFragment"
         android:name="com.msandypr.thesandynews.ui.fragments.HeadlineFragment"
         android:label="HeadlineFragment" >
         <action
