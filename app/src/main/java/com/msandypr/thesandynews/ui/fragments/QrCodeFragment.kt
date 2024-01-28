@@ -147,7 +147,19 @@ class QrCodeFragment : Fragment() {
                     Log.d(TAG,"extractBarcodeQrCodeInfo: encryptionType: $encryptionType")
 
                     resultTv.text = "TYPE_WIFI \nssid: $ssid \npassword: $password \nencryptionType: $encryptionType \n\nrawValue: $rawValue"
+                }
 
+                Barcode.TYPE_URL -> {
+                    val typeUrl = barcode.url
+
+                    val title = "${typeUrl?.title}"
+                    val url = "${typeUrl?.url}"
+
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: TYPE_URL")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: title: $title")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: url: $url")
+
+                    resultTv.text = "TYPE_URL \ntitle: $title \nurl: $url \n\nrawValue: $rawValue"
                 }
             }
         }
