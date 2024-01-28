@@ -1,6 +1,7 @@
 package com.msandypr.thesandynews.ui.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -20,6 +21,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 import com.msandypr.thesandynews.R
 import com.msandypr.thesandynews.databinding.FragmentQrCodeBinding
 
@@ -44,6 +50,9 @@ class QrCodeFragment : Fragment() {
 
     private var imageUri: Uri? = null
 
+    private var barcodeScannerOptions: BarcodeScannerOptions? = null
+    private var barcodeScanner: BarcodeScanner? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,6 +64,10 @@ class QrCodeFragment : Fragment() {
 
         cameraPermissions = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storagePermissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        barcodeScannerOptions = BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build()
+
+        barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions!!)
 
         cameraButton.setOnClickListener {
             if (checkCameraPermission()){
@@ -73,7 +86,70 @@ class QrCodeFragment : Fragment() {
         }
 
         scanButton.setOnClickListener {
+            if (imageUri == null){
+                showToast("Pilih gambarnya dulu sayang")
+            } else {
+                detectResultFromImage()
+            }
+        }
 
+    }
+
+    private fun detectResultFromImage() {
+        Log.d(TAG, "detectResultFromImage: ")
+        try {
+            val inputImage = InputImage.fromFilePath(requireContext(), imageUri!!)
+            val barcodeResult = barcodeScanner!!.process(inputImage)
+                .addOnSuccessListener { barcodes ->
+                    extractBarcodeQrCodeInfo(barcodes)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "detectResultFromImage: ", e)
+                    showToast("Failed scanning due to ${e.message}")
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "detectResultFromImage: ", e)
+            showToast("Failed due to ${e.message}")
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun extractBarcodeQrCodeInfo(barcodes: List<Barcode>) {
+
+        for (barcode in barcodes){
+            val bound = barcode.boundingBox
+            val corners = barcode.cornerPoints
+
+            val rawValue = barcode.rawValue
+            Log.d(TAG,"extractBarcodeQrCodeInfo: rawValue: $rawValue")
+
+            val valueType = barcode.valueType
+            when(valueType){
+                Barcode.TYPE_WIFI -> {
+                    val typeWifi = barcode.wifi
+
+                    val ssid = "${typeWifi?.ssid}"
+                    val password = "${typeWifi?.password}"
+                    var encryptionType = "${typeWifi?.encryptionType}"
+
+                    if (encryptionType == "1") {
+                        encryptionType = "OPEN"
+                    } else if (encryptionType == "2") {
+                        encryptionType = "WPA"
+                    } else if (encryptionType == "3") {
+                        encryptionType = "WEP"
+                    }
+
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: TYPE_WIFI")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: ssid: $ssid")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: password: $password")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: encryptionType: $encryptionType")
+
+                    resultTv.text = "TYPE_WIFI \nssid: $ssid \npassword: $password \nencryptionType: $encryptionType \n\nrawValue: $rawValue"
+
+                }
+            }
         }
     }
 
