@@ -7,4 +7,7 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="todo">TODO</string>
+    <string name="result">Result:</string>
+    <string name="pick_an_image_from_gallery">Pick an Image from Gallery</string>
+    <string name="scan">Scan</string>
 </resources>
