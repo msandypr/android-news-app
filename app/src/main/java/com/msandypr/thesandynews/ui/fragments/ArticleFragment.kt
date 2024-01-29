@@ -31,9 +31,15 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
 
         binding.fab?.setOnClickListener {
-            newsViewModel?.addToBookmarks(article)
-            Snackbar.make(view, "Added to Bookmark", Snackbar.LENGTH_SHORT).show()
+            val article = args.article
+            if (article != null) {
+                newsViewModel.addToBookmarks(article)
+                Snackbar.make(view, "Added to Bookmark", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(view, "Article can't added to Bookmark", Snackbar.LENGTH_LONG).show()
+            }
         }
+
     }
 
 }
