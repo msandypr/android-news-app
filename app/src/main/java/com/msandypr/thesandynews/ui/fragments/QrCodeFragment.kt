@@ -161,7 +161,7 @@ class QrCodeFragment : Fragment() {
                     Log.d(TAG,"extractBarcodeQrCodeInfo: password: $password")
                     Log.d(TAG,"extractBarcodeQrCodeInfo: encryptionType: $encryptionType")
 
-                    resultTv.text = "TYPE_WIFI \nssid: $ssid \npassword: $password \nencryptionType: $encryptionType \n\nrawValue: $rawValue"
+                    resultTv.text = "Wi-Fi \nssid: $ssid \npassword: $password \nencryptionType: $encryptionType \n\nrawValue: $rawValue"
                 }
 
                 Barcode.TYPE_URL -> {
@@ -174,7 +174,7 @@ class QrCodeFragment : Fragment() {
                     Log.d(TAG,"extractBarcodeQrCodeInfo: title: $title")
                     Log.d(TAG,"extractBarcodeQrCodeInfo: url: $url")
 
-                    resultTv.text = "TYPE_URL \ntitle: $title \nurl: $url \n\nrawValue: $rawValue"
+                    resultTv.text = "Internet URL \ntitle: $title \nurl: $url \n\nrawValue: $rawValue"
                 }
 
                 Barcode.TYPE_EMAIL -> {
@@ -189,7 +189,26 @@ class QrCodeFragment : Fragment() {
                     Log.d(TAG,"extractBarcodeQrCodeInfo: url: $body")
                     Log.d(TAG,"extractBarcodeQrCodeInfo: url: $subject")
 
-                    resultTv.text = "TYPE_URL \naddress: $address \nbody: $body \nsubject: $subject \n\nrawValue: $rawValue"
+                    resultTv.text = "Email \naddress: $address \nbody: $body \nsubject: $subject \n\nrawValue: $rawValue"
+                }
+
+                Barcode.TYPE_CONTACT_INFO -> {
+                    val typeContact = barcode.contactInfo
+
+                    val title = "${typeContact?.title}"
+                    val organization = "${typeContact?.organization}"
+                    val name = "${typeContact?.name?.first} ${typeContact?.name?.last}"
+                    val phone = "$${typeContact?.name?.first} ${typeContact?.phones?.get(0)?.number}"
+
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: TYPE_CONTACT_INFO")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: title: $title")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: organization: $organization")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: name: $name")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: phone: $phone")
+
+                    resultTv.text = "Contact Information \ntitle: $title \norganization: $organization \nname: $name \nphone: $phone \n\nrawValue: $rawValue"
+                } else -> {
+                    resultTv.text = "rawValue: $rawValue"
                 }
             }
         }
