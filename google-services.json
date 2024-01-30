@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473215931903",
+    "project_id": "the-sandy-news",
+    "storage_bucket": "the-sandy-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473215931903:android:8d76c7aed546264e8d03ca",
+        "android_client_info": {
+          "package_name": "com.msandypr.thesandynews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5hoQ5kiFJJN3BiNBrcFu800bXWupqrAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

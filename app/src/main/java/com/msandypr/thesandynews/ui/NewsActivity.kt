@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.msandypr.thesandynews.R
 import com.msandypr.thesandynews.databinding.ActivityNewsBinding
 import com.msandypr.thesandynews.db.ArticleDatabase
@@ -26,5 +28,11 @@ class NewsActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        //Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+
+        //Inisialisasi Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
     }
 }
