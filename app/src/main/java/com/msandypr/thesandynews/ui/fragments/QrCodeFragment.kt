@@ -176,6 +176,21 @@ class QrCodeFragment : Fragment() {
 
                     resultTv.text = "TYPE_URL \ntitle: $title \nurl: $url \n\nrawValue: $rawValue"
                 }
+
+                Barcode.TYPE_EMAIL -> {
+                    val typeEmail = barcode.email
+
+                    val address = "${typeEmail?.address}"
+                    val body = "${typeEmail?.body}"
+                    val subject = "${typeEmail?.subject}"
+
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: TYPE_EMAIL")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: title: $address")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: url: $body")
+                    Log.d(TAG,"extractBarcodeQrCodeInfo: url: $subject")
+
+                    resultTv.text = "TYPE_URL \naddress: $address \nbody: $body \nsubject: $subject \n\nrawValue: $rawValue"
+                }
             }
         }
     }

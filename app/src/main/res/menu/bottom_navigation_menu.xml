@@ -23,7 +23,7 @@
     <item
         android:id="@+id/qrCodeFragment"
         android:title="QR Code"
-        android:icon="@drawable/baseline_mlkit">
+        android:icon="@drawable/baseline_qrcode">
     </item>
 
 </menu>
