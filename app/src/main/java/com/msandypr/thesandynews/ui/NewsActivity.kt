@@ -17,6 +17,12 @@ class NewsActivity : AppCompatActivity() {
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: ActivityNewsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+
+        //Inisialisasi Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -28,11 +34,5 @@ class NewsActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
-
-        //Inisialisasi Firebase
-        FirebaseApp.initializeApp(this)
-
-        //Inisialisasi Crashlytics
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
     }
 }

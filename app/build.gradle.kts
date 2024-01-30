@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
     kotlin("kapt")
 }
@@ -11,6 +12,10 @@ android {
     namespace = "com.msandypr.thesandynews"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.msandypr.thesandynews"
         minSdk = 24
@@ -18,6 +23,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("Boolean", "ENABLE_CRASHLYTICS", "true")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,7 +40,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 }

@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -105,12 +106,24 @@ class QrCodeFragment : Fragment() {
                         .addOnFailureListener { e ->
                             Log.e(TAG, "detectResultFromImage: Barcode scanning failed", e)
                             showToast("Failed scanning due to ${e.message}")
+
+                            // Log error to Crashlytics
+                            FirebaseCrashlytics.getInstance().log("Failed scanning QR code: ${e.message}")
+
+                            // Record exception
+                            FirebaseCrashlytics.getInstance().recordException(e)
                         }
                 }
             }
         } catch (e: Exception) {
             Log.e(TAG, "detectResultFromImage: Exception", e)
             showToast("Failed due to ${e.message}")
+
+            // Log error to Crashlytics
+            FirebaseCrashlytics.getInstance().log("Failed processing image: ${e.message}")
+
+            // Record exception
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 
@@ -229,6 +242,9 @@ class QrCodeFragment : Fragment() {
             imageViewToScan.setImageURI(imageUri)
         } else {
             showToast("Cancelled!")
+
+            // Log error to Crashlytics
+            FirebaseCrashlytics.getInstance().log("Gallery picker cancelled.")
         }
     }
 
@@ -253,6 +269,11 @@ class QrCodeFragment : Fragment() {
             Log.d(TAG, "cameraActivityResultLauncher: imageUri: $imageUri")
 
             imageViewToScan.setImageURI(imageUri)
+        } else {
+            showToast("Cancelled!")
+
+            // Log error to Crashlytics
+            FirebaseCrashlytics.getInstance().log("Camera activity cancelled.")
         }
     }
 
