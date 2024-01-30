@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.msandypr.thesandynews.adapters.NewsAdapter
 import com.msandypr.thesandynews.databinding.FragmentHeadlineBinding
 import com.msandypr.thesandynews.ui.NewsViewModel
@@ -56,7 +57,7 @@ class HeadlineFragment : Fragment(R.layout.fragment_headline) {
         }
 
         newsViewModel.headlines.observe(viewLifecycleOwner, Observer { response ->
-            when(response){
+            when (response) {
                 is Resource.Success<*> -> {
                     hideProgressBar()
                     hideErrorMessage()
@@ -65,7 +66,7 @@ class HeadlineFragment : Fragment(R.layout.fragment_headline) {
                         val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE
                         isLastPage = newsViewModel.headlinesPage == totalPages
                         if (isLastPage) {
-                            binding.recyclerHeadlines.setPadding(0,0,0,0)
+                            binding.recyclerHeadlines.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -74,6 +75,13 @@ class HeadlineFragment : Fragment(R.layout.fragment_headline) {
                     response.message?.let { message ->
                         Toast.makeText(activity, "Sorry, error: $message", Toast.LENGTH_LONG).show()
                         showErrorMessage(message)
+
+                        // Log error to Crashlytics
+                        FirebaseCrashlytics.getInstance().log("Error fetching headlines: $message")
+
+                        // Record exception
+                        val exception = Exception("Error fetching headlines: $message")
+                        FirebaseCrashlytics.getInstance().recordException(exception)
                     }
                 }
                 is Resource.Loading<*> -> {
