@@ -2,6 +2,7 @@ package com.msandypr.thesandynews.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.msandypr.thesandynews.R
 import com.msandypr.thesandynews.adapters.NewsAdapter
 import com.msandypr.thesandynews.databinding.FragmentBookmarkBinding
@@ -77,37 +79,48 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
 
         newsViewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
-            when(response){
-                is Resource.Success<*> -> {
-                    hideProgressBar()
-                    hideErrorMessage()
-                    response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE
-                        isLastPage = newsViewModel.searchNewsPage == totalPages
-                        if (isLastPage) {
-                            binding.recyclerSearch.setPadding(0,0,0,0)
+            try {
+                when(response){
+                    is Resource.Success<*> -> {
+                        hideProgressBar()
+                        hideErrorMessage()
+                        response.data?.let { newsResponse ->
+                            newsAdapter.differ.submitList(newsResponse.articles.toList())
+                            val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE
+                            isLastPage = newsViewModel.searchNewsPage == totalPages
+                            if (isLastPage) {
+                                binding.recyclerSearch.setPadding(0,0,0,0)
+                            }
                         }
                     }
-                }
-                is Resource.Error<*> -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        Toast.makeText(activity, "Sorry, error: $message", Toast.LENGTH_LONG).show()
-                        showErrorMessage(message)
+                    is Resource.Error<*> -> {
+                        hideProgressBar()
+                        response.message?.let { message ->
+                            Toast.makeText(activity, "Sorry, error: $message", Toast.LENGTH_LONG).show()
+                            showErrorMessage(message)
+                            FirebaseCrashlytics.getInstance().log("SearchNews API error: $message")
+                        }
+                    }
+                    is Resource.Loading<*> -> {
+                        showProgressBar()
                     }
                 }
-                is Resource.Loading<*> -> {
-                    showProgressBar()
-                }
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log("Error in observe(searchNews): ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         })
 
-        retryButton.setOnClickListener{
-            if (binding.searchEdit.text.toString().isNotEmpty()){
-                newsViewModel.searchNews(binding.searchEdit.text.toString())
-            } else {
-                hideErrorMessage()
+        retryButton.setOnClickListener {
+            try {
+                if (binding.searchEdit.text.toString().isNotEmpty()) {
+                    newsViewModel.searchNews(binding.searchEdit.text.toString())
+                } else {
+                    hideErrorMessage()
+                }
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log("Error in retryButton click: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
     }

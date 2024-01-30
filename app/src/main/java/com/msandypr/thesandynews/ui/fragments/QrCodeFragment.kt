@@ -71,27 +71,52 @@ class QrCodeFragment : Fragment() {
         barcodeScanner = BarcodeScanning.getClient(barcodeScannerOptions!!)
 
         cameraButton.setOnClickListener {
-            if (checkCameraPermission()){
-                pickImageCamera()
-            } else {
-                requestCameraAndStoragePermissions()
+            try {
+                if (checkCameraPermission()) {
+                    pickImageCamera()
+                } else {
+                    requestCameraAndStoragePermissions()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "cameraButton click failed", e)
+                showToast("Error occurred while processing camera")
+
+                FirebaseCrashlytics.getInstance().log("Error in cameraButton click: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
 
         galleryButton.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            galleryActivityResultLauncher.launch(galleryIntent)
-        }
+            try {
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                galleryActivityResultLauncher.launch(galleryIntent)
+            } catch (e: Exception) {
+                Log.e(TAG, "galleryButton click failed", e)
+                showToast("Error occurred while processing gallery")
 
-        scanButton.setOnClickListener {
-            if (imageUri == null){
-                showToast("Pilih gambarnya dulu sayang")
-            } else {
-                detectResultFromImage()
+                FirebaseCrashlytics.getInstance().log("Error in galleryButton click: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
             }
         }
 
+        scanButton.setOnClickListener {
+            try {
+                if (imageUri == null) {
+                    showToast("Pilih gambarnya dulu sayang")
+                } else {
+                    detectResultFromImage()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "scanButton click failed", e)
+                showToast("Error occurred while processing qr & barcode scan")
+
+                FirebaseCrashlytics.getInstance().log("Error in scanButton click: ${e.message}")
+                FirebaseCrashlytics.getInstance().recordException(e)
+            }
+        }
     }
+
+
 
     private fun detectResultFromImage() {
         Log.d(TAG, "detectResultFromImage: ")
@@ -107,10 +132,7 @@ class QrCodeFragment : Fragment() {
                             Log.e(TAG, "detectResultFromImage: Barcode scanning failed", e)
                             showToast("Failed scanning due to ${e.message}")
 
-                            // Log error to Crashlytics
                             FirebaseCrashlytics.getInstance().log("Failed scanning QR code: ${e.message}")
-
-                            // Record exception
                             FirebaseCrashlytics.getInstance().recordException(e)
                         }
                 }
@@ -126,9 +148,6 @@ class QrCodeFragment : Fragment() {
             FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
-
-
-
     @SuppressLint("SetTextI18n")
     private fun extractBarcodeQrCodeInfo(barcodes: List<Barcode>) {
 
@@ -213,8 +232,6 @@ class QrCodeFragment : Fragment() {
             }
         }
     }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -223,40 +240,6 @@ class QrCodeFragment : Fragment() {
         binding = FragmentQrCodeBinding.inflate(inflater, container, false)
         return binding.root
     }
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        cameraButton = binding.cameraButton
-//        galleryButton = binding.galleryButton
-//        imageViewToScan = binding.imageViewToScan
-//        scanButton = binding.scanButton
-//        resultTv = binding.resultTv
-//
-//        cameraPermissions = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//        storagePermissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//
-//        cameraButton.setOnClickListener {
-//            if (checkCameraPermission()){
-//                pickImageCamera()
-//            } else {
-//                requestCameraPermission()
-//            }
-//        }
-//
-//        galleryButton.setOnClickListener {
-//            if (checkStoragePermission()){
-//                pickImageGallery()
-//            } else {
-//                requestStoragePermission()
-//            }
-//        }
-//
-//        scanButton.setOnClickListener {
-//
-//        }
-//    }
-
     private fun pickImageGallery(){
         val intent = Intent(Intent.ACTION_PICK)
 
