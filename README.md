@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://github.com/msandypr/android-news-app"><img src="https://i.ibb.co/Jmwszd8/ic-launcher-round.webp" alt="Markdownify" width="100"></a>
+  <a href="https://github.com/msandypr/android-news-app"><img src="https://i.ibb.co/125bfWw/newspaper-news-svgrepo-com.png" alt="TheSandyNews" width="200"></a>
   <br>
   The Sandy News
   <br>
@@ -69,6 +69,8 @@ This software uses the following tools & open source packages:
     ![Firebase Crashlytics](https://github.com/msandypr/android-news-app/assets/60559936/6f244809-316e-49d5-a752-b6c577cf5afe)
 - [Firebase App Distribution](https://firebase.google.com/docs/app-distribution)
     ![Firebase App Distribution](https://github.com/msandypr/android-news-app/assets/60559936/26140ec3-a95e-4162-98bc-5669ec7396e1)
+- [SVGrepo](https://www.svgrepo.com/)
+- [NewsAPI](https://newsapi.org/)
 
 ## Show your support
 
