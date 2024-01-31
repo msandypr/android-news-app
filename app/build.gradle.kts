@@ -3,12 +3,18 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
     kotlin("kapt")
 }
 
 android {
     namespace = "com.msandypr.thesandynews"
     compileSdk = 34
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.msandypr.thesandynews"
@@ -17,6 +23,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("Boolean", "ENABLE_CRASHLYTICS", "true")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,7 +40,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 }
@@ -79,5 +86,16 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     ksp ("com.github.bumptech.glide:compiler:4.12.0")
+
+    //ML Kit Barcode
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
 }

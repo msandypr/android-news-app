@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_headlineFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
+        <action
+            android:id="@+id/action_headlinesFragment_to_qrCodeFragment"
+            app:destination="@id/qrCodeFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -37,5 +40,13 @@
         <action
             android:id="@+id/action_searchFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrCodeFragment"
+        android:name="com.msandypr.thesandynews.ui.fragments.QrCodeFragment"
+        android:label="QrCodeFragment" >
+        <action
+            android:id="@+id/action_qrCodeFragment_to_headlinesFragment2"
+            app:destination="@id/headlinesFragment" />
     </fragment>
 </navigation>

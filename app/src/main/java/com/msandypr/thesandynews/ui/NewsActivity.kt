@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.FirebaseApp
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.msandypr.thesandynews.R
 import com.msandypr.thesandynews.databinding.ActivityNewsBinding
 import com.msandypr.thesandynews.db.ArticleDatabase
@@ -15,6 +17,12 @@ class NewsActivity : AppCompatActivity() {
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: ActivityNewsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+
+        //Inisialisasi Crashlytics
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -76,11 +77,28 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
     }
 
     fun addToBookmarks(article: Article) = viewModelScope.launch {
-        if (article.title != null && article.description != null && article.url != null) {
-            newsRepository.upsert(article)
+        val author = article.author ?: "Unknown Author"
+
+        if (article.title != null && article.description != null && article.url != null && article.publishedAt != null && article.content != null) {
+            // Populate the Author field before adding the article to bookmarks
+            val articleWithAuthor = article.copy(author = author)
+            newsRepository.upsert(articleWithAuthor)
+            Log.d("NewsViewModel", "Article added to bookmarks: ${article.title}")
         } else {
+            Log.w("NewsViewModel", "Skipping null article: ${article.title}")
+            Log.w("NewsViewModel", "Details: " +
+                    "Title: ${article.title}, " +
+                    "Description: ${article.description}, " +
+                    "URL: ${article.url}, " +
+                    "Author: ${article.author}, " +
+                    "PublishedAt: ${article.publishedAt}, " +
+                    "Content: ${article.content}"
+            )
         }
     }
+
+
+
 
     fun getBookmarkNews() = newsRepository.getBookmarkNews()
 
