@@ -47,7 +47,7 @@ $ cd android-news-app
 ## Download
 
 You can [download](https://appdistribution.firebase.google.com/testerapps/1:473215931903:android:8d76c7aed546264e8d03ca/releases/6m5l27g8om7fo?utm_source=firebase-console) the latest installable version of TheSandyNews for Android if you're a testers.
-If you not an tester, you can email me to msandypr.dev@gmail.com 
+If you not an tester, you can email me to msandypr.dev@gmail.com, or you can simply download this [from here](https://drive.google.com/file/d/1xcLlRJAr7pCBsDNxzE2PbQUgHOCknroD/view?usp=sharing)
 ![Tester](https://github.com/msandypr/android-news-app/assets/60559936/d996d32f-ca41-4859-9d1b-7bcd707434cd)
 
 
