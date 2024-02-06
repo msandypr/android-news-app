@@ -98,4 +98,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
 
+    //rootbeer
+    implementation ("com.scottyab:rootbeer-lib:0.0.9")
+
 }

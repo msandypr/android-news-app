@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#AAD9BB</color>
     <color name="yellow">#F9F7C9</color>
+    <color name="textColorNonRooted">#AAD9BB</color>
+    <color name="textColorRooted">#FF0000</color>
+    <color name="buttonRootCheckBackgroundColor">#F9F7C9</color>
 </resources>
