@@ -78,12 +78,32 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
 
     fun addToBookmarks(article: Article) = viewModelScope.launch {
         val author = article.author ?: "Unknown Author"
+        val defaultImageUrl = "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"
 
-        if (article.title != null && article.description != null && article.url != null && article.publishedAt != null && article.content != null) {
-            // Populate the Author field before adding the article to bookmarks
-            val articleWithAuthor = article.copy(author = author)
+        if (article.title != null && article.description != null && article.url != null &&
+            article.publishedAt != null && article.content != null) {
+
+            // Check if urlToImage is null, use defaultImageUrl instead
+            val imageUrl = article.urlToImage ?: defaultImageUrl
+
+            val articleWithAuthor = article.copy(author = author, urlToImage = imageUrl)
+
+            // Log the article details before upsert
+            Log.d("NewsViewModel", "Adding to bookmarks: ${articleWithAuthor.title}")
+            Log.d("NewsViewModel", "Details: " +
+                    "Title: ${articleWithAuthor.title}, " +
+                    "Description: ${articleWithAuthor.description}, " +
+                    "URL: ${articleWithAuthor.url}, " +
+                    "Author: ${articleWithAuthor.author}, " +
+                    "PublishedAt: ${articleWithAuthor.publishedAt}, " +
+                    "Content: ${articleWithAuthor.content}, " +
+                    "URLToImage: ${articleWithAuthor.urlToImage}"
+            )
+
             newsRepository.upsert(articleWithAuthor)
-            Log.d("NewsViewModel", "Article added to bookmarks: ${article.title}")
+
+            // Log success after upsert
+            Log.d("NewsViewModel", "Article added to bookmarks: ${articleWithAuthor.title}")
         } else {
             Log.w("NewsViewModel", "Skipping null article: ${article.title}")
             Log.w("NewsViewModel", "Details: " +
@@ -92,13 +112,19 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository): Andro
                     "URL: ${article.url}, " +
                     "Author: ${article.author}, " +
                     "PublishedAt: ${article.publishedAt}, " +
-                    "Content: ${article.content}"
+                    "Content: ${article.content}, " +
+                    "URLToImage: ${article.urlToImage}"
             )
+
+            // Show a toast indicating that the article cannot be added to bookmarks
+            showToast("Error: Bookmark cannot be saved for this article")
         }
     }
 
 
+    private fun showToast(message: String) {
 
+    }
 
     fun getBookmarkNews() = newsRepository.getBookmarkNews()
 
