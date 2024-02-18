@@ -9,7 +9,8 @@ import com.msandypr.thesandynews.models.Article
 
 @Database(
     entities = [Article::class],
-    version = 1,
+    version = 3,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase : RoomDatabase() {

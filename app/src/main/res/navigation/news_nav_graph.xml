@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_nav_graph"
     app:startDestination="@id/headlinesFragment">
 
@@ -49,4 +50,9 @@
             android:id="@+id/action_qrCodeFragment_to_headlinesFragment2"
             app:destination="@id/headlinesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/rootCheckFragment"
+        android:name="com.msandypr.thesandynews.ui.fragments.RootCheckFragment"
+        android:label="fragment_root_check"
+        tools:layout="@layout/fragment_root_check" />
 </navigation>

@@ -19,11 +19,16 @@
         android:icon="@drawable/baseline_search">
     </item>
 
-    <!-- Item-menu for launching an activity -->
     <item
         android:id="@+id/qrCodeFragment"
         android:title="QR Code"
         android:icon="@drawable/baseline_qrcode">
+    </item>
+
+    <item
+        android:id="@+id/rootCheckFragment"
+        android:title="Root Check"
+        android:icon="@drawable/baseline_root_check">
     </item>
 
 </menu>
