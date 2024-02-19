@@ -2,6 +2,7 @@ package com.msandypr.thesandynews.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -11,11 +12,13 @@ import com.msandypr.thesandynews.R
 import com.msandypr.thesandynews.databinding.ActivityNewsBinding
 import com.msandypr.thesandynews.db.ArticleDatabase
 import com.msandypr.thesandynews.repository.NewsRepository
+import com.scottyab.rootbeer.RootBeer
 
 class NewsActivity : AppCompatActivity() {
 
     lateinit var newsViewModel: NewsViewModel
     lateinit var binding: ActivityNewsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //Inisialisasi Firebase
         FirebaseApp.initializeApp(this)

@@ -1,12 +1,11 @@
 package com.msandypr.thesandynews.ui.fragments
 
-import android.annotation.SuppressLint
-import android.content.res.ColorStateList
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.msandypr.thesandynews.R
 import com.scottyab.rootbeer.RootBeer
 
@@ -31,7 +31,6 @@ class RootCheckFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_root_check, container, false)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,17 +39,7 @@ class RootCheckFragment : Fragment() {
 
         originalButtonBackgroundColor = ContextCompat.getColor(requireContext(), R.color.buttonRootCheckBackgroundColor)
 
-        val buttonColors = ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_checked),
-                intArrayOf(-android.R.attr.state_checked)
-            ),
-            intArrayOf(
-                ContextCompat.getColor(requireContext(), R.color.textColorRooted),
-                originalButtonBackgroundColor
-            )
-        )
-
+        val buttonColors = ContextCompat.getColorStateList(requireContext(), R.color.buttonRootCheckBackgroundColor)
         toggleButton.backgroundTintList = buttonColors
 
         toggleButton.setOnCheckedChangeListener { _, isChecked ->
@@ -76,10 +65,13 @@ class RootCheckFragment : Fragment() {
         }
 
         displayRootPopup(status, isRooted)
+
+        if (isRooted) {
+            showExitConfirmationDialog()
+        }
     }
 
     private fun displayRootPopup(status: String, isRooted: Boolean) {
-        Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
 
         val parts = status.split("\n")
         if (parts.size == 2) {
@@ -100,5 +92,17 @@ class RootCheckFragment : Fragment() {
             val buttonColorResId = if (isRooted) R.color.textColorRooted else R.color.textColorNonRooted
             toggleButton.backgroundTintList = ContextCompat.getColorStateList(requireContext(), buttonColorResId)
         }
+    }
+
+    private fun showExitConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Perangkat Terdeteksi di Root")
+            .setMessage("Perangkat Anda terdeteksi di-root. Anda akan keluar dari aplikasi.")
+            .setPositiveButton("OK") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+                activity?.finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 }

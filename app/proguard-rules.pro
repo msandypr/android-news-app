@@ -51,3 +51,11 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.openjsse.**
 
+-obfuscationdictionary "C:\apktool\dic.txt"
+-classobfuscationdictionary "C:\apktool\dic.txt"
+-packageobfuscationdictionary "C:\apktool\dic.txt"
+
+-mergeinterfacesaggressively
+-overloadaggressively
+-repackageclasses 'com.msandypr.thesandynews'
+

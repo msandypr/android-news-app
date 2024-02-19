@@ -5,8 +5,10 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
+    id("AndResGuard")
     kotlin("kapt")
 }
+
 
 android {
     namespace = "com.msandypr.thesandynews"
@@ -104,3 +106,54 @@ dependencies {
     implementation ("com.scottyab:rootbeer-lib:0.0.9")
 
 }
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = true
+    useSign = true
+    // It will keep the origin path of your resources when it's true
+    keepRoot = false
+    // If set, name column in arsc those need to proguard will be kept to this value
+    fixedResName = "arg"
+    // It will merge the duplicated resources, but don't rely on this feature too much.
+    // it's always better to remove duplicated resource from repo
+    mergeDuplicatedRes = true
+    whiteList = listOf(
+        // your icon
+        "R.drawable.icon",
+        // for fabric
+        "R.string.com.crashlytics.*",
+        // for google-services
+        "R.string.google_app_id",
+        "R.string.gcm_defaultSenderId",
+        "R.string.default_web_client_id",
+        "R.string.ga_trackingId",
+        "R.string.firebase_database_url",
+        "R.string.google_api_key",
+        "R.string.google_crash_reporting_api_key",
+        "R.string.project_id"
+    )
+    compressFilePattern = listOf(
+        "*.png",
+        "*.jpg",
+        "*.jpeg",
+        "*.gif"
+    )
+    sevenzip {
+        path = "C:/apktool/7z2301-x64.exe"
+    }
+
+    /**
+     * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
+     * to the path which assemble[Task] write to
+     **/
+    // finalApkBackupPath = "${project.rootDir}/final.apk"
+
+    /**
+     * Optional: Specifies the name of the message digest algorithm to user when digesting the entries of JAR file
+     * Only works in V1signing, default value is "SHA-1"
+     **/
+    // digestalg = "SHA-256"
+}
+
